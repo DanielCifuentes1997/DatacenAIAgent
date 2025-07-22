@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datacen AI Agent</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #f0f2f5;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        .chat-container {
+            flex: 1;
+            overflow-y: auto;
+            padding: 20px;
+        }
+        .chat-message {
+            margin-bottom: 15px;
+            display: flex;
+            flex-direction: column;
+        }
+        .chat-bubble {
+            max-width: 75%;
+            padding: 10px 15px;
+            border-radius: 20px;
+            line-height: 1.5;
+        }
+        .chat-message.user {
+            align-items: flex-end;
+        }
+        .chat-message.user .chat-bubble {
+            background-color: #007bff;
+            color: white;
+            border-bottom-right-radius: 5px;
+        }
+        .chat-message.bot {
+            align-items: flex-start;
+        }
+        .chat-message.bot .chat-bubble {
+            background-color: #ffffff;
+            color: #333;
+            border: 1px solid #e9e9eb;
+            border-bottom-left-radius: 5px;
+        }
+        .chat-form-container {
+            padding: 15px;
+            background-color: #ffffff;
+            border-top: 1px solid #ddd;
+        }
+        .brand-header {
+            background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%);
+            color: white;
+            padding: 10px 0;
+            text-align: center;
+        }
+        .form-control:focus {
+            box-shadow: none;
+            border-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="brand-header">
+        <h1>Datacen AI Agent 🤖</h1>
+    </header>
+
+    <div class="chat-container" id="chat-container">
+        {% for item in history %}
+            <div class="chat-message user">
+                <div class="chat-bubble">{{ item.prompt }}</div>
+            </div>
+            <div class="chat-message bot">
+                <div class="chat-bubble">{{ item.response_html|safe }}</div>
+            </div>
+        {% endfor %}
+
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {{ error }}
+            </div>
+        {% endif %}
+    </div>
+
+    <div class="chat-form-container">
+        <form method="POST" action="/predict">
+            <div class="input-group">
+                <input type="text" class="form-control form-control-lg" id="prompt" name="prompt" placeholder="Escribe tu mensaje aquí..." required autocomplete="off">
+                <button type="submit" class="btn btn-primary btn-lg">Enviar</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // Script para hacer scroll hasta el último mensaje
+        window.onload = function() {
+            const chatContainer = document.getElementById('chat-container');
+            chatContainer.scrollTop = chatContainer.scrollHeight;
+        };
+    </script>
+
+</body>
+</html>
