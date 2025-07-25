@@ -4,3 +4,8 @@ flask_session
 markdown
 PyMuPDF
 fitz
+pandas
+numpy
+scikit-learn
+streamlit
+plotly
